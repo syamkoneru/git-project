@@ -9,3 +9,22 @@ git commit -m "messsage "  - to save the object / version of project to the file
 git commit -a "message  " to save all the files in the folder with this command 
 if you see any error during git commit, use this command - git config --global user.email "email id " 
 git log   - it shows all the logs which have been done in the local repository 
+
+
+-------------------------------------------
+
+new branch creation 
+
+git branch <branch name>  - to create a new branch
+git checkout <branch name> - to navigate t0 new branch 
+do modification in the new branch and the git add and git commit
+to bring all the modified files to master to we need to checkout to master - git checkout master and then use command git merge <branch name > so that all the files from branch will be copied to master 
+note - if we need to bring files from branch to master we need to be in master directory 
+
+git commit -a -m "message" - to commit all the files modified in the branch with out adding the files
+
+-------------------------------------------------
+
+
+
+
