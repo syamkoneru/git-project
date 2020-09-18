@@ -55,7 +55,7 @@ git fetch commands
  
  Naviagate to the new branch created in local repository 
  git checkout <branchname>
- git push origin <branch name> all the files in branch repository to the github 
+ git push origin <branch name> all the files in branch repository to the central 
  
  
  
