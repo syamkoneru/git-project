@@ -1,0 +1,10 @@
+git clone <https:URL>  / git remote add origin "<repository address > "
+git pull - to pull records from repository  / git pull origin master 
+git push - to push the records to repository 
+---after you create / modify any file  - git status 
+git add filename - to add the file to the index/ local repository 
+git add -A - to add multiple files to the index/ local repository 
+git commit -m "messsage "  - to save the object / version of project to the file and save to local repository . message says who is the user who has committed the change 
+git commit -a "message  " to save all the files in the folder with this command 
+if you see any error during git commit, use this command - git config --global user.email "email id " 
+git log   - it shows all the logs which have been done in the local repository 
