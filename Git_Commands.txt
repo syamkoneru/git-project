@@ -46,6 +46,21 @@ git fetch commands
  ssh-keygen  ( publich key will be generated in a path 
  cat path and take the ssh key and save in key in github 
  
+ after adding the ssh-key in the git hub give the below command to sync with git bash 
+ 
+ git -T git@github.com
+ 
+ 
+ to see the new branches which are created in local repository in  the central repository 
+ 
+ Naviagate to the new branch created in local repository 
+ git checkout <branchname>
+ git push origin <branch name> all the files in branch repository to the github 
+ 
+ 
+ 
+ 
+ 
  
  
  
