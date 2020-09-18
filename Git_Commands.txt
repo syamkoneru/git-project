@@ -25,6 +25,54 @@ git commit -a -m "message" - to commit all the files modified in the branch with
 
 -------------------------------------------------
 
-
+git fetch commands
+ git fetch ( to fecth the new file from central repository )
+ git branch -a   ( to see all the branches in the local repository ) 
+ git merge origin/master  ( all the new files in central repository will be merged to local repository ) 
+ 
+ 
+ rebase command  - to get much cleaner history 
+ 
+ git checkout <branch > 
+ create new file and modify it 
+ git add <file name> or git add -A ( to add all files ) 
+ git commit -m "message" 
+ git checkout master < we need to naviagte to destination directory to rebase all the files from branch ) 
+ git rebase <branch name > it gets all the files from branch to master in a linear way 
+ 
+ 
+ generate public ssh key 
+ 
+ ssh-keygen  ( publich key will be generated in a path 
+ cat path and take the ssh key and save in key in github 
+ 
+ after adding the ssh-key in the git hub give the below command to sync with git bash 
+ 
+ git -T git@github.com
+ 
+ 
+ to see the new branches which are created in local repository in  the central repository 
+ 
+ Naviagate to the new branch created in local repository 
+ git checkout <branchname>
+ git push origin <branch name> all the files in branch repository to the github 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
 
 
