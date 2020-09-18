@@ -65,6 +65,22 @@ git branch -d localBranchName
 git push origin --delete remoteBranchName
  
  
+ revert functionality 
+ 
+ git add filename 
+ modify the file with some code 
+ git commit -m "message" 
+ modify the file again with new lines of code 
+  git commit -m "message" 
+  
+  git log 
+  take the first 8 digits of commit code and use below command 
+   git checkout hexadecimalcode filename  -- it will bring back the file to the first version of the code 
+   cat filename and check the code 
+   
+   
+   
+   
  
  
  
