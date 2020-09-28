@@ -1,0 +1,17 @@
+export JAVA_HOME="C:\Program Files\Java\jdk1.8.0_251"
+export ANT_HOME="C:\Program Files\apache-ant-1.9.15"
+export M2_HOME="C:\Program Files\apache-maven-3.6.3"
+export JENKINS_HOME="C:\Users\BuddiXPS\Documents\workspace\jenkins"
+export PATH=$PATH:$JAVA_HOME:$ANT_HOME:$M2_HOME:$JENKINS_HOME
+
+
+ netstat -aon|grep 8080
+ netstat -aon |find /i “listening” |find “8080”
+ taskkill /F /PID 189
+ 
+
+ java -jar jenkits.war
+ 
+ AWS>>
+  chmod 400 EC2_INS_1.pem (To Make File Read Only)
+  ssh -i "EC2_INS_1.pem" ec2-user@ec2-3-94-254-136.compute-1.amazonaws.com ((To Apply key to AWS Instance and login to AWS EC2 Instance)  
