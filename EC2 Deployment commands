@@ -1,0 +1,71 @@
+EC2_Syam.pem
+
+ssh -i "EC2_Syam.pem"  ec2-3-92-75-32.compute-1.amazonaws.com    - sudo to EC2 instance
+
+
+Example:
+ssh -i "EC2_Syam.pem" ec2-user@ec2-3-92-75-32.compute-1.amazonaws.com      - sudo to EC2 instance  
+
+sudo su - this will take you to root 
+
+[root@ip-172-31-37-253 home]# cd jenkins/
+[root@ip-172-31-37-253 jenkins]# mkdir lib
+[root@ip-172-31-37-253 jenkins]# mkdir bin
+[root@ip-172-31-37-253 jenkins]# mkdir workspace
+[root@ip-172-31-37-253 jenkins]# mkdir webapps
+
+cd /home/jenkins/lib 
+[root@ip-172-31-37-253 lib]# pwd
+/home/jenkins/lib
+
+wget http://mirrors.advancedhosters.com/apache/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.zip
+
+unzip apache-maven-3.6.3-bin.zip
+
+rm apache-maven-3.6.3-bin.zip
+
+wget http://mirror.cc.columbia.edu/pub/software/apache//ant/binaries/apache-ant-1.9.15-bin.zip
+
+unzip apache-ant-1.9.15-bin.zip
+
+rm apache-ant-1.9.15-bin.zip
+
+cd /home/jenkins/webapps
+
+
+wget https://updates.jenkins-ci.org/download/war/2.258/jenkins.war
+
+
+
+yum install java-1.8.0-openjdk-devel
+
+
+[root@ip-172-31-37-253 bin]# which java
+/usr/bin/java
+
+[root@ip-172-31-37-253 bin]# java -version
+java version "1.7.0_261"
+OpenJDK Runtime Environment (amzn-2.6.22.1.83.amzn1-x86_64 u261-b02)
+OpenJDK 64-Bit Server VM (build 24.261-b02, mixed mode)
+
+
+export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk.x86_64
+export M2_HOME=/home/jenkins/lib/apache-maven-3.6.3
+export ANT_HOME=/home/jenkins/lib/apache-ant-1.9.15
+export JENKINS_HOME=/home/jenkins/workspace
+export PATH=$PATH:$JAVA_HOME/bin:$M2_HOME/bin:$ANT_HOME/bin:$JENKINS_HOME
+
+yum install git-core
+
+yum install httpd
+
+sudo su   - to go to the root user 
+
+netstat -aon|grep 8080
+ netstat -aon |find /i “listening” |find “8080”
+ taskkill /F /PID 189
+
+
+sudo yum install java-1.8.0
+sudo yum remove java-1.7.0-openjdk
+
