@@ -1,0 +1,410 @@
+ssh -i "EC2_Syam.pem" ec2-user@ec2-54-161-136-93.compute-1.amazonaws.com   - sudo to EC2 instance  172.31.90.234
+
+ 
+
+ssh -i "EC2_Syam.pem" ec2-user@ec2-18-234-201-91.compute-1.amazonaws.com   172.31.83.21
+
+ssh -i "EC2_Syam.pem" ec2-user@ec2-34-230-81-97.compute-1.amazonaws.com  172.31.95.149
+
+ 
+
+
+
+sudo su
+
+PS1=Master#
+
+ 
+
+Master#useradd ansibleuser  - do this step in all the 3 servers 
+
+Master#passwd ansibleuser
+
+Changing password for user ansibleuser.
+
+New password:
+
+BAD PASSWORD: The password contains the user name in some form
+
+Retype new password:
+
+passwd: all authentication tokens updated successfully.
+
+********************************************************
+
+Master#visudo (This step only for Master)
+
+ 
+
+## Allow root to run any commands anywhere
+
+root    ALL=(ALL)       ALL
+
+ 
+
+ansibleuser ALL=(ALL) NOPASSWD: ALL (add this under above line)
+
+ 
+
+ 
+
+Master#su - ansibleuser
+
+[ansibleuser@ip-172-31-87-241 ~]$ sudo -l (to check no passwords)
+
+Matching Defaults entries for ansibleuser on ip-172-31-87-241:
+
+    !visiblepw, always_set_home, match_group_by_gid, always_query_group_plugin, env_reset, env_keep="COLORS DISPLAY HOSTNAME HISTSIZE KDEDIR LS_COLORS", env_keep+="MAIL
+
+    PS1 PS2 QTDIR USERNAME LANG LC_ADDRESS LC_CTYPE", env_keep+="LC_COLLATE LC_IDENTIFICATION LC_MEASUREMENT LC_MESSAGES", env_keep+="LC_MONETARY LC_NAME LC_NUMERIC
+
+    LC_PAPER LC_TELEPHONE", env_keep+="LC_TIME LC_ALL LANGUAGE LINGUAS _XKB_CHARSET XAUTHORITY", secure_path=/sbin\:/bin\:/usr/sbin\:/usr/bin
+
+ 
+
+User ansibleuser may run the following commands on ip-172-31-87-241:
+
+    (ALL) NOPASSWD: ALL
+
+[ansibleuser@ip-172-31-87-241 ~]$ pwd
+
+/home/ansibleuser
+
+[ansibleuser@ip-172-31-87-241 ~]$
+
+ 
+
+ssh-keygen
+
+ 
+
+***********below steps in all chaild servers)
+
+WEBSERVER>>(>>To change the permissions to ssh form Ansible Master Server)
+
+WebServer#cd /etc/ssh
+
+WebServer#vi sshd_config
+
+ 
+
+# To disable tunneled clear text passwords, change to no here!
+
+PasswordAuthentication yes
+
+#PermitEmptyPasswords no
+
+#PasswordAuthentication no
+
+ *******************
+ 
+ Run the below commands to restart all three webservers to reflect ssh changes>>
+ 
+ DBServer#cat /etc/redhat-release -->To see version
+ 
+ Red Hat Enterprise Linux release 8.2 (Ootpa) -->To see version
+ 
+DBServer#systemctl restart sshd -->Restart command (web,app,Db)
+
+****************Master server step**********************************
+
+/home/ansibleuser
+
+ssh-copy-id 172.31.83.21 (To Save the PubKey in the Webserver from MasterServer)
+
+>> 
+
+[ansibleuser@ip-172-31-81-8 ~]$ ssh-copy-id 172.31.80.62
+
+Master#cd /home/ansibleuser/
+
+Master#pwd
+
+/home/ansibleuser
+
+Master#ssh-copy-id 172.31.85.102
+
+/usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: "/home/ansibleuser/.ssh/id_rsa.pub"
+
+/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+
+/usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
+
+ansibleuser@172.31.85.102's password:
+
+ 
+
+Number of key(s) added: 1
+
+ 
+
+Now try logging into the machine, with:   "ssh '172.31.85.102'"
+
+and check to make sure that only the key(s) you wanted were added.
+
+
+******************************
+
+Master#ssh-copy-id 172.31.88.202 (webserver or appserver or Dbservers Private Ip)
+
+ansibleuser (provide pasword)
+
+ssh 172.31.88.202 (then check its connect to webserver with private Ip) (provide password first time)
+
+***********************************Ansbile Installation on Master Server********************************
+
+sudo dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+
+sudo dnf update
+
+****************************after install goto below path and verify the .repos**********
+
+Master#cd /etc/yum.repos.d/
+
+Master#ll
+
+**********To install Ansible**************
+
+sudo yum install ansible -y
+
+Master#ansible --version  >>(To See version/ansible 2.9.14)
+
+***************
+
+Goto below path:
+
+Master#cd /etc/ansible/
+
+Master#sudo cp ansible.cfg ansible.cfg.tmp
+
+Master#sudo cp hosts hosts.tmp
+
+ 
+
+Master#sudo vi hosts
+
+Master#cat hosts
+
+[webserver]
+
+172.31.85.102
+
+ 
+
+[appserver]
+
+172.31.94.79
+
+ 
+
+[dbserver]
+
+172.31.80.62
+
+*************************
+
+Goto below path:
+
+Master#cd /etc/ansible/
+
+Master#ansible all --list-hosts
+
+  hosts (3):
+
+   172.31.85.102
+
+    172.31.94.79
+
+    172.31.80.62
+
+Master#ansible all -m ping (to check all servers connection status)
+
+ 
+
+Master#ansible webserver -m ping (to check Individual server connection status)
+
+ 
+
+Master#ansible appserver -m ping (to check Individual server connection status)
+
+ 
+
+Master#ansible dbserver -m ping (to check Individual server connection status)
+
+ 
+
+ansible all -m command -a "uptime" (to check all servers uptime Info)
+
+***************************************************
+
+sudo vi invetory.ini (create and add webserver to the file)
+
+ 
+
+Master#cd /home/ansibleuser/
+
+Master#sudo vi inventory.ini
+
+Master#cat inventory.ini
+
+[webserver]
+
+172.31.85.102
+
+Master#
+
+************************************
+
+Master#ansible webserver -m ping
+
+172.31.86.198 | SUCCESS => {
+
+    "ansible_facts": {
+
+        "discovered_interpreter_python": "/usr/libexec/platform-python"
+
+    },
+
+    "changed": false,
+
+    "ping": "pong"
+
+}
+
+Master#pwd
+
+/home/ansibleuser
+
+************** to check webserver ip is taking from inventory.ini file or not******************
+
+Master#ansible webserver -i inventory.ini -m ping
+
+172.31.86.198 | SUCCESS => {
+
+    "ansible_facts": {
+
+        "discovered_interpreter_python": "/usr/libexec/platform-python"
+
+    },
+
+    "changed": false,
+
+    "ping": "pong"
+
+}
+
+***********************************************
+
+Master#
+
+ 
+
+ 
+
+Master#ansible dbserver -i inventory.ini -m ping -u root
+
+172.31.88.202 | UNREACHABLE! => {
+
+    "changed": false,
+
+    "msg": "Failed to connect to the host via ssh: root@172.31.88.202: Permission denied (publickey,gssapi-keyex,gssapi-with-mic,password).",
+
+    "unreachable": true
+
+}
+
+ 
+
+************************************************************************************************************
+
+In below path:
+
+/home/ansibleuser
+
+vi example.yml
+
+and enter below code:
+
+---
+
+- hosts: 172.31.85.102
+
+   user: ansibleuser
+
+   vars:
+
+    welcome_msg: 'hi how are you'
+
+   tasks:
+
+   - name: msg copy
+
+     copy:
+
+      dest: /home/ansibleuser/testfile
+
+      content: "{{ welcome_msg}}"
+
+ENTER":wq!"*SAVE and Exit*
+
+******************************************
+
+ 
+
+Master#ansible-playbook -i inventory.ini exampleone.yml
+
+Master#ansible-playbook exampleone.yml
+
+After that goto *Webserver* and go below path:
+
+WebServer#cd /home/ansibleuser/
+
+WebServer#ls -altr
+
+then enter command:
+
+WebServer#cat testfile
+
+hi how are youW
+
+*****************************************************
+
+Master#vi exampletwo.yml
+
+and enter below code:
+
+---
+
+- hosts: 172.31.85.102
+
+   tasks:
+
+   - name: create directory
+
+     file: path=/home/ansibleuser/www state=directory owner=ansibleuser group=ansibleuser mode=0755 recurse=yes
+
+ENTER":wq!"*SAVE and Exit*
+
+****************************************************
+
+Master#ansible-playbook exampletwo.yml
+
+After that goto *Webserver* and go below path:
+
+WebServer#cd /home/ansibleuser/
+
+WebServer#ls -altr
+
+-rw-rw-r--. 1 ansibleuser ansibleuser 14 Nov  1 03:39 testfile
+
+drwxr-xr-x. 2 ansibleuser ansibleuser  6 Nov  1 03:59 www
+
+ 
+
+in the above files it should create "WWW" directory
+
+************************************************************************************
+
+docs.ansible.com/ansible/file_module.html (PlayBook Commands)
+
+ 
